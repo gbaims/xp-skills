@@ -1,0 +1,3 @@
+interface:
+  display_name: "XP Implement"
+  short_description: "Build, review, and commit an accepted Story"

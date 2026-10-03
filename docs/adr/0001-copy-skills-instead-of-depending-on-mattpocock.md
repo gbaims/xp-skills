@@ -1,0 +1,3 @@
+# Copy Matt Pocock's skills instead of depending on them
+
+These skills reuse primitives from [mattpocock/skills](https://github.com/mattpocock/skills) (grilling, domain-modeling, tdd, codebase-design, code-review), but we copy and rename them (`xp-*`) rather than requiring users to install his repo alongside ours. Same names would collide on install, and depending on his skills by name would let an upstream rewrite silently change our workflow. The price is manual upkeep: his skills stay installed here as a dev dependency (`skills-lock.json`), so we can update them, read the diff, and choose what to port. `CREDITS.md` records the source of each copied piece.
