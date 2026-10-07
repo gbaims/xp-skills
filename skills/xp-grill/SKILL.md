@@ -5,11 +5,17 @@ description: Grill the user into one accepted Story, sharpening the domain gloss
 
 # XP Grill
 
-Interview the user relentlessly until you share one **Story**: a change small enough to go from idea to commit in this context window. The grill ends with the Story written out in full and accepted by the user. `xp-implement` builds from that text, and its reviewer sees nothing else, so the Story carries every decision.
+Interview the user relentlessly until you share one **Story**: a change small enough to go from idea to pull request in this context window. The grill ends with the Story written out in full and accepted by the user. `xp-implement` builds from that text, and its reviewer sees nothing else, so the Story carries every decision.
 
-## 1. Start from a Card
+## 1. Set up the Story branch
 
-If `CARDS.md` exists at the repo root, show its Cards and ask whether this Story starts from one of them. A **Card** is a one-line note of a Story not yet grilled. Remember which Card was picked: `xp-implement` removes it at commit.
+Every Story lives on its own branch of a GitHub repo, and its Cards live in that repo's issues. Use the `gh` CLI; it infers the repo from the clone. On re-entry from `xp-implement`, skip this section: the branch already exists (see Re-entry).
+
+1. **Preflight.** Stop and tell the user what is missing if `gh auth status` or `gh repo view` fails. Stop and ask the user to clean up if `git status --porcelain` is non-empty.
+2. **Check the squash setting.** The default branch keeps one commit per Story because the repo squash-merges with the pull request's title and body as the message. Read `gh api repos/{owner}/{repo} --jq '{allow_squash_merge, squash_merge_commit_title, squash_merge_commit_message}'`. It should read `allow_squash_merge: true`, `squash_merge_commit_title: PR_TITLE`, `squash_merge_commit_message: PR_BODY`. When it doesn't, warn the user and show them the fix (it needs admin rights), then carry on:
+   `gh api -X PATCH repos/{owner}/{repo} -F allow_squash_merge=true -f squash_merge_commit_title=PR_TITLE -f squash_merge_commit_message=PR_BODY`
+3. **Offer the Cards.** A **Card** is a one-line note of a Story not yet grilled: an open issue with no linked pull request (`gh issue list --state open --search "-linked:pr" --limit 100 --json number,title`). Show number and title, and ask whether this Story starts from one of them. The issue title is the Card; when the picked issue has a body, read it (`gh issue view <N> --comments`) as raw material for the grill, never as settled decisions. Remember the Card's number: the pull request closes it.
+4. **Cut the branch.** Run `git fetch origin` and branch from the fresh default branch (`gh repo view --json defaultBranchRef --jq .defaultBranchRef.name`): `git switch -c <N>-<slug> origin/<default>` for a Card, `<slug>` otherwise, the slug taken from the Card title or the user's idea. Glossary and ADR edits from the grill land on this branch.
 
 Read `GLOSSARY.md` (or `GLOSSARY-MAP.md`) and the ADRs in `docs/adr/` touching the area before the first round.
 
@@ -42,7 +48,7 @@ Every round, test the idea against the size of a Story:
 - **Seams**: a Story is tested at one seam, two at most. More seams means more than one Story.
 - **Converging frontier**: when, after about three rounds, each round opens more questions than it settles, premises are piling up. Cut.
 
-To cut, propose the smallest first Story that delivers something observable, and grill only that. Everything cut becomes a Card: append one line per Card to `CARDS.md` (create it if missing). A Card is one line with no acceptance criteria and no decisions; detail is born only when a Card becomes a Story.
+To cut, propose the smallest first Story that delivers something observable, and grill only that. Everything cut becomes a Card, kept in the Story's Out of scope until the Story is accepted (a cut can still be undone in the next round). A Card is one line with no acceptance criteria and no decisions; detail is born only when a Card becomes a Story.
 
 ### Sharpen the language
 
@@ -79,8 +85,13 @@ When the frontier is empty (every branch visited, nothing silently assumed, seam
 
 Use the glossary's terms. Leave out file paths and code snippets; they go stale.
 
-The grill is done when the user accepts the Story text. If they change anything, rewrite it and ask again.
+When the user accepts the Story text (if they change anything, rewrite it and ask again), close it out:
+
+1. Publish the cut Cards: one issue per Card, title only (`gh issue create --title "<Card>" --body ""`). Write each issue's `#N` beside its Card in Out of scope; this is the one edit allowed after acceptance, and the text with the numbers is the accepted Story from here on.
+2. Commit the grill's glossary and ADR edits, if any, with the subject `Grill: <Story title>`.
+
+The grill is done when the Story is accepted, its Cards are published, and the working tree is clean.
 
 ## Re-entry
 
-When `xp-implement` reports a fallen premise, grill only the decisions that depend on it, then rewrite the Story and get it accepted again before implementation resumes.
+When `xp-implement` reports a fallen premise, stay on the Story branch: grill only the decisions that depend on it, then rewrite the Story, get it accepted again, and publish any new Cards before implementation resumes.

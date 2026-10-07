@@ -9,7 +9,7 @@ Both axes run as **parallel sub-agents** so they don't pollute each other's cont
 
 ## 1. Capture the diff
 
-Stage everything (`git add -A`) and capture the diff against the start commit: `git diff --cached <start>`. Confirm it is non-empty before spawning anything.
+Stage everything (`git add -A`) and capture the diff against the branch base: `git diff --cached <base>`. Confirm it is non-empty before spawning anything.
 
 ## 2. Find the standards sources
 

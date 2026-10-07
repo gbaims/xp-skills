@@ -1,5 +1,5 @@
 interface:
   display_name: "XP"
-  short_description: "Grill, implement, and commit one Story"
+  short_description: "Grill, implement, and open a PR for one Story"
 policy:
   allow_implicit_invocation: false

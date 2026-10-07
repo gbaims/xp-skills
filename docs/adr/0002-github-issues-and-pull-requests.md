@@ -1,0 +1,3 @@
+# Cards live in GitHub issues; each Story ends in a pull request
+
+Cards moved from `CARDS.md` to GitHub issues so the backlog is visible outside the repo and each Card links to the pull request that built it; "Card" stays the term, since an issue invites the spec a Card refuses to be. Each Story gets its own branch, cut at the start of the grill, and ends as a ready pull request the user merges; the repo squash-merges with the pull request body, so the default branch keeps one commit per Story with the Story in its body. GitHub is required, with no local-file fallback, because a second tracker would double the surface of skills that are opinionated on purpose.

@@ -5,7 +5,7 @@ Agent skills for a single-loop workflow, grill then implement in one context, in
 ## Language
 
 **Story**:
-A change that goes from idea to commit inside a single context window, through one grill and one implement.
+A change that goes from idea to pull request inside a single context window, through one grill and one implement.
 _Avoid_: Feature, spec, ticket, iteration, slice
 
 **Card**:

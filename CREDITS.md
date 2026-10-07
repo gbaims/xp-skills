@@ -4,7 +4,7 @@ These skills adapt material from [mattpocock/skills](https://github.com/mattpoco
 
 | Our file | Source |
 | --- | --- |
-| `skills/xp-grill/SKILL.md` | `grill-with-docs`, `grilling`, `domain-modeling` |
+| `skills/xp-grill/SKILL.md` | `grill-with-docs`, `grilling`, `domain-modeling`, `setup-matt-pocock-skills/issue-tracker-github.md` |
 | `skills/xp-grill/GLOSSARY-FORMAT.md` | `domain-modeling/GLOSSARY-FORMAT.md` |
 | `skills/xp-grill/ADR-FORMAT.md` | `domain-modeling/ADR-FORMAT.md` |
 | `skills/xp-grill/DESIGN.md` | `codebase-design/SKILL.md`, `codebase-design/DEEPENING.md` |
